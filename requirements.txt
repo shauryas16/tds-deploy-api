@@ -1,5 +1,5 @@
 flask
 requests
 PyGithub
-openai
 gunicorn
+google-generativeai
