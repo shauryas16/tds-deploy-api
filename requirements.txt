@@ -2,4 +2,4 @@ flask
 requests
 PyGithub
 gunicorn
-google-generativeai
+openai
