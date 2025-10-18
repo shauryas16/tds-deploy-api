@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 from github import Github
-import openai
 import requests
 import time
 import os
