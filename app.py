@@ -13,7 +13,11 @@ OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY', '')
 app = Flask(__name__)
 
 def generate_code_with_llm(brief, checks):
-    """Use OpenAI to generate HTML/JS code based on brief"""
+    """Use AI PIPE to generate HTML/JS code based on brief"""
+    import requests
+    
+    aipipe_token = os.environ.get('AIPIPE_TOKEN', '')
+    
     prompt = f"""Create a complete single-page HTML application based on this brief:
 {brief}
 
@@ -23,12 +27,19 @@ Requirements to check:
 Generate a complete HTML file with inline CSS and JavaScript. Make sure it meets all the requirements.
 Only return the HTML code, nothing else."""
     
-    client = openai.OpenAI(api_key=OPENAI_API_KEY)
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": prompt}]
+    response = requests.post(
+        "https://aipipe.org/openrouter/v1/chat/completions",
+        headers={
+            "Authorization": f"Bearer {aipipe_token}",
+            "Content-Type": "application/json"
+        },
+        json={
+            "model": "openai/gpt-4o-mini",
+            "messages": [{"role": "user", "content": prompt}]
+        }
     )
-    return response.choices[0].message.content
+    
+    return response.json()['choices'][0]['message']['content']
 
 def create_github_repo(task_id, html_code):
     """Create GitHub repo, add files, enable Pages"""
