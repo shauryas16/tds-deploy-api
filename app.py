@@ -100,17 +100,17 @@ MIT License"""
     
     # Enable GitHub Pages
     # Enable GitHub Pages
-try:
-    repo.create_pages_site(source={"branch": "main", "path": "/"})
-except Exception as e:
-    print(f"Pages enable error (may already be enabled): {e}")
-    # Try alternative method
     try:
-        repo.edit(has_pages=True)
-    except:
-        pass
-
+        repo.create_pages_site(source={"branch": "main", "path": "/"})
+    except Exception as e:
+        print(f"Pages enable error (may already be enabled): {e}")
+        # Try alternative method
+        try:
+            repo.edit(has_pages=True)
+        except:
+            pass
     
+        
     return repo
 
 def send_evaluation(evaluation_url, email, task, round_num, nonce, repo_url, commit_sha, pages_url):
